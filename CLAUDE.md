@@ -53,6 +53,12 @@ compatibility:
 bash obsidian-compendium/tests/test_vault_config.sh
 bash obsidian-compendium/tests/test_git_sync.sh
 bash obsidian-compendium/tests/test_e2e_flow.sh
+
+# 运行 obsidian-code-reader 测试
+bash obsidian-code-reader/tests/test_vault_config.sh
+bash obsidian-code-reader/tests/test_repo_meta.sh
+bash obsidian-code-reader/tests/test_sync_flow.sh
+bash obsidian-code-reader/tests/test_e2e_flow.sh
 ```
 
 测试为独立 Shell 脚本，无外部测试框架依赖。
