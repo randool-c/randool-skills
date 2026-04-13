@@ -232,3 +232,5 @@ def function_name(param1: str, param2: int) -> Result:
 **必须包含**：
 - 核心外部依赖表格（名称、版本、用途）
 - 内部模块依赖方向描述
+
+> 如需对单个模块做更深入的子模块/函数级剖析，使用「模块深剖」命令，详见 `references/deep-analysis.md`。

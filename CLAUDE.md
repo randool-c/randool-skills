@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 obsidian-compendium/   # Obsidian 知识沉淀与检索（知识沉淀、知识检索、索引重建）
-obsidian-code-reader/  # Git 仓库深度解读并写入 Obsidian（仓库解读、仓库同步、索引重建）
+obsidian-code-reader/  # Git 仓库深度解读并写入 Obsidian（仓库解读、仓库同步、索引重建、模块深剖）
 ```
 
 两个技能共享：
@@ -59,6 +59,7 @@ bash obsidian-code-reader/tests/test_vault_config.sh
 bash obsidian-code-reader/tests/test_repo_meta.sh
 bash obsidian-code-reader/tests/test_sync_flow.sh
 bash obsidian-code-reader/tests/test_e2e_flow.sh
+bash obsidian-code-reader/tests/test_deep_analysis.sh
 ```
 
 测试为独立 Shell 脚本，无外部测试框架依赖。
