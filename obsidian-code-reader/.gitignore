@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Vault 配置（用户本地路径，不应提交）
+vault_path.txt
+
+# Skill 运行时产物
+*.workspace/
+evals/
+iteration-*/
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
