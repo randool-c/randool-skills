@@ -250,17 +250,17 @@ test_6_affected_notes_file_level() {
   cat > "$mapping_file" << 'EOF'
 | 源文件/目录 | 对应笔记 | 解读范围 |
 |------------|---------|---------|
-| src/auth/login.ts | [[模块/认证模块-登录]] | 文件级 |
-| src/auth/verify.ts | [[模块/认证模块-验证]] | 文件级 |
-| src/models/user.ts | [[数据模型/用户模型]] | 文件级 |
+| src/auth/login.ts | [[30-模块/10-认证模块-登录]] | 文件级 |
+| src/auth/verify.ts | [[30-模块/20-认证模块-验证]] | 文件级 |
+| src/models/user.ts | [[50-数据模型/10-用户模型]] | 文件级 |
 EOF
 
   local note
   note=$(find_affected_notes "src/auth/login.ts" "$mapping_file")
-  assert_eq "精确匹配 login.ts" "模块/认证模块-登录" "$note"
+  assert_eq "精确匹配 login.ts" "30-模块/10-认证模块-登录" "$note"
 
   note=$(find_affected_notes "src/models/user.ts" "$mapping_file")
-  assert_eq "精确匹配 user.ts" "数据模型/用户模型" "$note"
+  assert_eq "精确匹配 user.ts" "50-数据模型/10-用户模型" "$note"
 }
 
 test_7_affected_notes_dir_level() {
@@ -269,16 +269,16 @@ test_7_affected_notes_dir_level() {
   cat > "$mapping_file" << 'EOF'
 | 源文件/目录 | 对应笔记 | 解读范围 |
 |------------|---------|---------|
-| src/auth/ | [[模块/认证模块-总览]] | 整个目录 |
-| src/store/ | [[模块/状态管理-Pinia]] | 整个目录 |
+| src/auth/ | [[30-模块/10-认证模块-总览]] | 整个目录 |
+| src/store/ | [[30-模块/20-状态管理-Pinia]] | 整个目录 |
 EOF
 
   local note
   note=$(find_affected_notes "src/auth/jwt.ts" "$mapping_file")
-  assert_eq "目录级匹配 auth 子文件" "模块/认证模块-总览" "$note"
+  assert_eq "目录级匹配 auth 子文件" "30-模块/10-认证模块-总览" "$note"
 
   note=$(find_affected_notes "src/store/user.ts" "$mapping_file")
-  assert_eq "目录级匹配 store 子文件" "模块/状态管理-Pinia" "$note"
+  assert_eq "目录级匹配 store 子文件" "30-模块/20-状态管理-Pinia" "$note"
 }
 
 test_8_unmapped_file() {
@@ -287,7 +287,7 @@ test_8_unmapped_file() {
   cat > "$mapping_file" << 'EOF'
 | 源文件/目录 | 对应笔记 | 解读范围 |
 |------------|---------|---------|
-| src/auth/login.ts | [[模块/认证模块-登录]] | 文件级 |
+| src/auth/login.ts | [[30-模块/10-认证模块-登录]] | 文件级 |
 EOF
 
   local note

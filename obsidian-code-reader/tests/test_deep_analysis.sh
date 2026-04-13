@@ -193,7 +193,7 @@ migrate_flat_to_dir() {
 }
 
 # 展开 _repo_meta.md 中的粗粒度映射为精细映射
-# expand_mapping <meta_file> <原笔记路径（如 模块/认证模块-权限校验）> <新目录路径（如 模块/认证模块）> <文件列表（换行分隔：file|note_name）>
+# expand_mapping <meta_file> <原笔记路径（如 30-模块/10-认证模块-权限校验）> <新目录路径（如 30-模块/10-认证模块）> <文件列表（换行分隔：file|note_name）>
 expand_mapping() {
   local meta_file="$1" old_note="$2" new_dir="$3" file_mappings="$4"
 
@@ -275,7 +275,7 @@ init_repo_dir() {
   local vault_root="$1" repo_name="$2" repo_path="$3"
   local repo_dir="${vault_root}/代码解读/${repo_name}"
 
-  mkdir -p "${repo_dir}/模块"
+  mkdir -p "${repo_dir}/30-模块"
 
   # 生成初始 _repo_meta.md
   local now
@@ -314,7 +314,7 @@ init_repo_dir() {
 EOF
 
   # 生成轻量项目概览
-  cat > "${repo_dir}/项目概览.md" << EOF
+  cat > "${repo_dir}/10-项目概览.md" << EOF
 ---
 创建时间: ${now}
 更新时间: ${now}
@@ -350,16 +350,16 @@ test_1_resolve_from_note() {
   cat > "$meta_file" << 'EOF'
 | 源文件/目录 | 对应笔记 | 解读范围 |
 |------------|---------|---------|
-| src/auth/ | [[模块/认证模块-权限校验]] | 整个目录 |
-| src/store/ | [[模块/状态管理-Pinia]] | 整个目录 |
-| src/utils/format.ts | [[模块/工具函数-格式化]] | 文件级 |
+| src/auth/ | [[30-模块/10-认证模块-权限校验]] | 整个目录 |
+| src/store/ | [[30-模块/20-状态管理-Pinia]] | 整个目录 |
+| src/utils/format.ts | [[30-模块/30-工具函数-格式化]] | 文件级 |
 EOF
 
   local result
-  result=$(resolve_target_from_note "认证模块-权限校验" "$meta_file")
+  result=$(resolve_target_from_note "10-认证模块-权限校验" "$meta_file")
   assert_eq "找到认证模块的源码路径" "ok:src/auth/" "$result"
 
-  result=$(resolve_target_from_note "状态管理-Pinia" "$meta_file")
+  result=$(resolve_target_from_note "20-状态管理-Pinia" "$meta_file")
   assert_eq "找到状态管理的源码路径" "ok:src/store/" "$result"
 
   result=$(resolve_target_from_note "不存在的笔记" "$meta_file")
@@ -373,16 +373,16 @@ test_2_resolve_from_path() {
   cat > "$meta_file" << 'EOF'
 | 源文件/目录 | 对应笔记 | 解读范围 |
 |------------|---------|---------|
-| src/auth/ | [[模块/认证模块-权限校验]] | 整个目录 |
-| src/utils/format.ts | [[模块/工具函数-格式化]] | 文件级 |
+| src/auth/ | [[30-模块/10-认证模块-权限校验]] | 整个目录 |
+| src/utils/format.ts | [[30-模块/30-工具函数-格式化]] | 文件级 |
 EOF
 
   local note
   note=$(resolve_target_from_path "src/auth/" "$meta_file")
-  assert_eq "路径 → 笔记名" "模块/认证模块-权限校验" "$note"
+  assert_eq "路径 → 笔记名" "30-模块/10-认证模块-权限校验" "$note"
 
   note=$(resolve_target_from_path "src/utils/format.ts" "$meta_file")
-  assert_eq "文件级路径 → 笔记名" "模块/工具函数-格式化" "$note"
+  assert_eq "文件级路径 → 笔记名" "30-模块/30-工具函数-格式化" "$note"
 }
 
 test_3_unmapped_path() {
@@ -392,7 +392,7 @@ test_3_unmapped_path() {
   cat > "$meta_file" << 'EOF'
 | 源文件/目录 | 对应笔记 | 解读范围 |
 |------------|---------|---------|
-| src/auth/ | [[模块/认证模块-权限校验]] | 整个目录 |
+| src/auth/ | [[30-模块/10-认证模块-权限校验]] | 整个目录 |
 EOF
 
   local note
@@ -410,11 +410,11 @@ EOF
 test_4_migrate_flat_to_dir() {
   echo "测试 4: 扁平笔记 → 目录迁移"
 
-  local module_dir="$TEST_ROOT/vault/代码解读/repo/模块"
+  local module_dir="$TEST_ROOT/vault/代码解读/repo/30-模块"
   mkdir -p "$module_dir"
 
   # 创建原扁平笔记
-  cat > "$module_dir/认证模块-权限校验.md" << 'EOF'
+  cat > "$module_dir/10-认证模块-权限校验.md" << 'EOF'
 ---
 创建时间: 2026-04-13 10:00
 更新时间: 2026-04-13 10:00
@@ -446,16 +446,16 @@ def verify_token(token):
 EOF
 
   # 执行迁移
-  migrate_flat_to_dir "$module_dir" "认证模块-权限校验" "认证模块"
+  migrate_flat_to_dir "$module_dir" "10-认证模块-权限校验" "10-认证模块"
 
   # 验证
-  assert_dir_exists "模块目录已创建" "$module_dir/认证模块"
-  assert_file_exists "总览 _index.md 已生成" "$module_dir/认证模块/_index.md"
-  assert_file_not_exists "原扁平笔记已删除" "$module_dir/认证模块-权限校验.md"
+  assert_dir_exists "模块目录已创建" "$module_dir/10-认证模块"
+  assert_file_exists "总览 _index.md 已生成" "$module_dir/10-认证模块/_index.md"
+  assert_file_not_exists "原扁平笔记已删除" "$module_dir/10-认证模块-权限校验.md"
 
   # 验证内容保留
   local content
-  content=$(cat "$module_dir/认证模块/_index.md")
+  content=$(cat "$module_dir/10-认证模块/_index.md")
   assert_contains "frontmatter 保留" "$content" "创建时间: 2026-04-13 10:00"
   assert_contains "标签保留" "$content" "标签: [repo, Python, 认证]"
   assert_contains "来源仓库保留" "$content" "来源仓库: repo"
@@ -466,17 +466,17 @@ EOF
 test_5_migrate_dir_already_exists() {
   echo "测试 5: 目录已存在时的迁移（幂等性）"
 
-  local module_dir="$TEST_ROOT/vault2/代码解读/repo/模块"
-  mkdir -p "$module_dir/认证模块"
+  local module_dir="$TEST_ROOT/vault2/代码解读/repo/30-模块"
+  mkdir -p "$module_dir/10-认证模块"
 
   # 目录下已有一个子模块笔记
-  cat > "$module_dir/认证模块/已有笔记.md" << 'EOF'
+  cat > "$module_dir/10-认证模块/已有笔记.md" << 'EOF'
 # 已有的子模块笔记
 不应被覆盖。
 EOF
 
   # 创建原扁平笔记
-  cat > "$module_dir/认证模块-权限校验.md" << 'EOF'
+  cat > "$module_dir/10-认证模块-权限校验.md" << 'EOF'
 ---
 创建时间: 2026-04-13 10:00
 来源仓库: repo
@@ -486,15 +486,15 @@ EOF
 EOF
 
   # 执行迁移
-  migrate_flat_to_dir "$module_dir" "认证模块-权限校验" "认证模块"
+  migrate_flat_to_dir "$module_dir" "10-认证模块-权限校验" "10-认证模块"
 
   # 验证：不丢失已有笔记
-  assert_file_exists "已有笔记未被删除" "$module_dir/认证模块/已有笔记.md"
-  assert_file_exists "总览已生成" "$module_dir/认证模块/_index.md"
-  assert_file_not_exists "原笔记已删除" "$module_dir/认证模块-权限校验.md"
+  assert_file_exists "已有笔记未被删除" "$module_dir/10-认证模块/已有笔记.md"
+  assert_file_exists "总览已生成" "$module_dir/10-认证模块/_index.md"
+  assert_file_not_exists "原笔记已删除" "$module_dir/10-认证模块-权限校验.md"
 
   local existing_content
-  existing_content=$(cat "$module_dir/认证模块/已有笔记.md")
+  existing_content=$(cat "$module_dir/10-认证模块/已有笔记.md")
   assert_contains "已有笔记内容完整" "$existing_content" "不应被覆盖"
 }
 
@@ -513,35 +513,35 @@ test_6_expand_mapping() {
 
 | 源文件/目录 | 对应笔记 | 解读范围 |
 |------------|---------|---------|
-| src/auth/ | [[模块/认证模块-权限校验]] | 整个目录 |
-| src/auth/jwt.py | [[模块/认证模块-权限校验]] | 文件级 |
-| src/store/ | [[模块/状态管理-Pinia]] | 整个目录 |
+| src/auth/ | [[30-模块/10-认证模块-权限校验]] | 整个目录 |
+| src/auth/jwt.py | [[30-模块/10-认证模块-权限校验]] | 文件级 |
+| src/store/ | [[30-模块/20-状态管理-Pinia]] | 整个目录 |
 
 ## 解读覆盖统计
 EOF
 
   # 展开映射
-  local file_mappings="src/auth/jwt.py|JWT鉴权
-src/auth/password.py|密码处理
-src/auth/rbac.py|权限控制"
+  local file_mappings="src/auth/jwt.py|10-JWT鉴权
+src/auth/password.py|20-密码处理
+src/auth/rbac.py|30-权限控制"
 
-  expand_mapping "$meta_file" "模块/认证模块-权限校验" "模块/认证模块" "$file_mappings"
+  expand_mapping "$meta_file" "30-模块/10-认证模块-权限校验" "30-模块/10-认证模块" "$file_mappings"
 
   local content
   content=$(cat "$meta_file")
 
   # 验证旧映射已删除
-  assert_not_contains "旧映射行已删除" "$content" "[[模块/认证模块-权限校验]]"
+  assert_not_contains "旧映射行已删除" "$content" "[[30-模块/10-认证模块-权限校验]]"
 
   # 验证新映射已添加
   assert_contains "深剖总览行存在" "$content" "深剖总览"
-  assert_contains "总览指向 _index" "$content" "[[模块/认证模块/_index]]"
-  assert_contains "JWT 精细映射" "$content" "[[模块/认证模块/JWT鉴权]]"
-  assert_contains "密码处理精细映射" "$content" "[[模块/认证模块/密码处理]]"
-  assert_contains "权限控制精细映射" "$content" "[[模块/认证模块/权限控制]]"
+  assert_contains "总览指向 _index" "$content" "[[30-模块/10-认证模块/_index]]"
+  assert_contains "JWT 精细映射" "$content" "[[30-模块/10-认证模块/10-JWT鉴权]]"
+  assert_contains "密码处理精细映射" "$content" "[[30-模块/10-认证模块/20-密码处理]]"
+  assert_contains "权限控制精细映射" "$content" "[[30-模块/10-认证模块/30-权限控制]]"
 
   # 验证不影响其他映射
-  assert_contains "状态管理映射不变" "$content" "[[模块/状态管理-Pinia]]"
+  assert_contains "状态管理映射不变" "$content" "[[30-模块/20-状态管理-Pinia]]"
 
   # 验证映射行数（状态管理 1 + 总览 1 + 精细 3 = 5）
   local mapping_count
@@ -561,64 +561,64 @@ test_7_lookup_after_expand() {
 
   local note
   note=$(resolve_target_from_path "src/auth/jwt.py" "$meta_file")
-  assert_eq "jwt.py → JWT鉴权" "模块/认证模块/JWT鉴权" "$note"
+  assert_eq "jwt.py → JWT鉴权" "30-模块/10-认证模块/10-JWT鉴权" "$note"
 
   note=$(resolve_target_from_path "src/auth/password.py" "$meta_file")
-  assert_eq "password.py → 密码处理" "模块/认证模块/密码处理" "$note"
+  assert_eq "password.py → 密码处理" "30-模块/10-认证模块/20-密码处理" "$note"
 
   note=$(resolve_target_from_path "src/auth/rbac.py" "$meta_file")
-  assert_eq "rbac.py → 权限控制" "模块/认证模块/权限控制" "$note"
+  assert_eq "rbac.py → 权限控制" "30-模块/10-认证模块/30-权限控制" "$note"
 
   # 总览查询
-  note=$(resolve_target_from_path "模块/认证模块/" "$meta_file")
-  assert_eq "模块目录 → 总览" "模块/认证模块/_index" "$note"
+  note=$(resolve_target_from_path "30-模块/10-认证模块/" "$meta_file")
+  assert_eq "模块目录 → 总览" "30-模块/10-认证模块/_index" "$note"
 
   # 不受影响的映射
   note=$(resolve_target_from_path "src/store/" "$meta_file")
-  assert_eq "store 映射不变" "模块/状态管理-Pinia" "$note"
+  assert_eq "store 映射不变" "30-模块/20-状态管理-Pinia" "$note"
 }
 
 test_8_update_wikilinks() {
   echo "测试 8: Wikilink 路径批量更新"
 
   local vault_dir="$TEST_ROOT/vault_wikilink/代码解读/repo"
-  mkdir -p "$vault_dir/核心流程" "$vault_dir/模块"
+  mkdir -p "$vault_dir/40-核心流程" "$vault_dir/30-模块"
 
   # 创建引用旧路径的笔记
-  cat > "$vault_dir/架构设计.md" << 'EOF'
+  cat > "$vault_dir/20-架构设计.md" << 'EOF'
 # 架构设计
 
-认证由 [[模块/认证模块-权限校验]] 处理。
-详见 [[模块/认证模块-权限校验|认证模块]] 的实现。
-状态管理用 [[模块/状态管理-Pinia]]。
+认证由 [[30-模块/10-认证模块-权限校验]] 处理。
+详见 [[30-模块/10-认证模块-权限校验|认证模块]] 的实现。
+状态管理用 [[30-模块/20-状态管理-Pinia]]。
 EOF
 
-  cat > "$vault_dir/核心流程/用户登录.md" << 'EOF'
+  cat > "$vault_dir/40-核心流程/10-用户登录.md" << 'EOF'
 # 用户登录流程
 
-1. 请求到达 → [[模块/认证模块-权限校验]]
-2. 验证 token → [[模块/认证模块-权限校验]]
+1. 请求到达 → [[30-模块/10-认证模块-权限校验]]
+2. 验证 token → [[30-模块/10-认证模块-权限校验]]
 EOF
 
   # 执行 Wikilink 更新
-  update_wikilinks "$vault_dir" "模块/认证模块-权限校验" "模块/认证模块/_index" "认证模块"
+  update_wikilinks "$vault_dir" "30-模块/10-认证模块-权限校验" "30-模块/10-认证模块/_index" "10-认证模块"
 
   # 验证架构设计笔记
   local arch_content
-  arch_content=$(cat "$vault_dir/架构设计.md")
-  assert_not_contains "旧链接已清除（架构设计）" "$arch_content" "[[模块/认证模块-权限校验]]"
-  assert_contains "新链接已替换" "$arch_content" "[[模块/认证模块/_index|认证模块]]"
+  arch_content=$(cat "$vault_dir/20-架构设计.md")
+  assert_not_contains "旧链接已清除（架构设计）" "$arch_content" "[[30-模块/10-认证模块-权限校验]]"
+  assert_contains "新链接已替换" "$arch_content" "[[30-模块/10-认证模块/_index|10-认证模块]]"
   # 带显示文本的链接保留原显示文本
-  assert_contains "显示文本保留" "$arch_content" "[[模块/认证模块/_index|认证模块]]"
+  assert_contains "显示文本保留" "$arch_content" "[[30-模块/10-认证模块/_index|10-认证模块]]"
 
   # 验证不影响其他链接
-  assert_contains "Pinia 链接不变" "$arch_content" "[[模块/状态管理-Pinia]]"
+  assert_contains "Pinia 链接不变" "$arch_content" "[[30-模块/20-状态管理-Pinia]]"
 
   # 验证流程笔记
   local flow_content
-  flow_content=$(cat "$vault_dir/核心流程/用户登录.md")
-  assert_not_contains "旧链接已清除（流程）" "$flow_content" "[[模块/认证模块-权限校验]]"
-  assert_contains "流程中的新链接" "$flow_content" "[[模块/认证模块/_index|认证模块]]"
+  flow_content=$(cat "$vault_dir/40-核心流程/10-用户登录.md")
+  assert_not_contains "旧链接已清除（流程）" "$flow_content" "[[30-模块/10-认证模块-权限校验]]"
+  assert_contains "流程中的新链接" "$flow_content" "[[30-模块/10-认证模块/_index|10-认证模块]]"
 }
 
 test_9_index_transform() {
@@ -639,29 +639,29 @@ test_9_index_transform() {
 
 | 笔记 | 一句话摘要 | 标签 | 创建时间 |
 |------|-----------|------|---------|
-| 认证模块-权限校验 | JWT 认证与 RBAC 权限 | 认证, JWT | 2026-04-13 |
-| 用户管理-CRUD | 用户增删改查 | 用户, CRUD | 2026-04-13 |
-| 数据处理-ETL | ETL 数据管道 | ETL, 数据 | 2026-04-13 |
+| 10-认证模块-权限校验 | JWT 认证与 RBAC 权限 | 认证, JWT | 2026-04-13 |
+| 20-用户管理-CRUD | 用户增删改查 | 用户, CRUD | 2026-04-13 |
+| 30-数据处理-ETL | ETL 数据管道 | ETL, 数据 | 2026-04-13 |
 EOF
 
   # 执行转换：认证模块从笔记表移至子目录表
-  transform_index_entry "$index_file" "认证模块-权限校验" "认证模块" "3" "JWT, 密码, 权限"
+  transform_index_entry "$index_file" "10-认证模块-权限校验" "10-认证模块" "3" "JWT, 密码, 权限"
 
   local content
   content=$(cat "$index_file")
 
   # 验证子目录表已创建并包含新条目
   assert_contains "子目录表存在" "$content" "## 子目录"
-  assert_contains "子目录条目" "$content" "认证模块/"
+  assert_contains "子目录条目" "$content" "10-认证模块/"
   assert_contains "子目录笔记数" "$content" "| 3 |"
   assert_contains "子目录主题" "$content" "JWT, 密码, 权限"
 
   # 验证原笔记条目已从笔记表删除
-  assert_not_contains "原笔记条目已删除" "$content" "认证模块-权限校验"
+  assert_not_contains "原笔记条目已删除" "$content" "10-认证模块-权限校验"
 
   # 验证不影响其他笔记
-  assert_contains "用户管理不变" "$content" "用户管理-CRUD"
-  assert_contains "数据处理不变" "$content" "数据处理-ETL"
+  assert_contains "用户管理不变" "$content" "20-用户管理-CRUD"
+  assert_contains "数据处理不变" "$content" "30-数据处理-ETL"
 }
 
 test_10_independent_run() {
@@ -692,7 +692,7 @@ test_10_independent_run() {
 
   # 验证目录结构
   assert_dir_exists "仓库目录已创建" "$repo_dir"
-  assert_dir_exists "模块目录已创建" "$repo_dir/模块"
+  assert_dir_exists "模块目录已创建" "$repo_dir/30-模块"
 
   # 验证 _repo_meta.md
   assert_file_exists "_repo_meta.md 已生成" "$repo_dir/_repo_meta.md"
@@ -706,9 +706,9 @@ test_10_independent_run() {
   assert_not_contains "commit 不是 unknown" "$meta_content" "上次解读commit: unknown"
 
   # 验证项目概览
-  assert_file_exists "项目概览已生成" "$repo_dir/项目概览.md"
+  assert_file_exists "项目概览已生成" "$repo_dir/10-项目概览.md"
   local overview_content
-  overview_content=$(cat "$repo_dir/项目概览.md")
+  overview_content=$(cat "$repo_dir/10-项目概览.md")
   assert_contains "概览包含仓库名" "$overview_content" "mock_repo"
   assert_contains "概览包含来源仓库" "$overview_content" "来源仓库: mock_repo"
 }

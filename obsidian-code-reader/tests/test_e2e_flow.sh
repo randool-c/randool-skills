@@ -26,7 +26,7 @@ setup() {
   TEST_ROOT=$(mktemp -d)
   VAULT_ROOT="$TEST_ROOT/vault"
   REPO_DIR="$VAULT_ROOT/代码解读/aiot-customer-service-app"
-  mkdir -p "$REPO_DIR/模块" "$REPO_DIR/核心流程" "$REPO_DIR/数据模型"
+  mkdir -p "$REPO_DIR/30-模块" "$REPO_DIR/40-核心流程" "$REPO_DIR/50-数据模型"
 }
 
 teardown() {
@@ -159,7 +159,7 @@ test_3_note_generation() {
   echo "测试 3: 笔记生成（frontmatter + 代码片段 + Wikilink）"
 
   # 模拟生成项目概览笔记
-  cat > "$REPO_DIR/项目概览.md" << 'ENDNOTE'
+  cat > "$REPO_DIR/10-项目概览.md" << 'ENDNOTE'
 ---
 创建时间: 2026-04-13 15:00
 更新时间: 2026-04-13 15:00
@@ -197,16 +197,16 @@ test_3_note_generation() {
 ## 关键设计决策
 
 - **为什么用 Electron 而非 Web**: 需要调用本地摄像头和硬件编解码能力
-- **H265 解码**: 自研 WASM 解码器，见 [[模块/H265解码器]]
+- **H265 解码**: 自研 WASM 解码器，见 [[30-模块/10-H265解码器]]
 
 ## 相关笔记
 
-- [[架构设计]]：整体架构设计
-- [[模块/Electron主进程]]：主进程模块解读
+- [[20-架构设计]]：整体架构设计
+- [[30-模块/20-Electron主进程]]：主进程模块解读
 ENDNOTE
 
   local content
-  content=$(cat "$REPO_DIR/项目概览.md")
+  content=$(cat "$REPO_DIR/10-项目概览.md")
 
   # 验证 frontmatter
   assert_contains "包含创建时间" "$content" "创建时间: 2026-04-13"
@@ -215,15 +215,15 @@ ENDNOTE
   assert_contains "包含来源仓库" "$content" "来源仓库: aiot-customer-service-app"
 
   # 验证 Wikilink
-  assert_contains "包含模块 Wikilink" "$content" "[[模块/H265解码器]]"
-  assert_contains "包含架构 Wikilink" "$content" "[[架构设计]]"
+  assert_contains "包含模块 Wikilink" "$content" "[[30-模块/10-H265解码器]]"
+  assert_contains "包含架构 Wikilink" "$content" "[[20-架构设计]]"
 }
 
 test_4_code_snippet_format() {
   echo "测试 4: 代码片段格式规范"
 
   # 模拟包含代码片段的模块笔记
-  cat > "$REPO_DIR/模块/Electron主进程.md" << 'ENDNOTE'
+  cat > "$REPO_DIR/30-模块/10-Electron主进程.md" << 'ENDNOTE'
 ---
 创建时间: 2026-04-13 15:30
 更新时间: 2026-04-13 15:30
@@ -238,7 +238,7 @@ test_4_code_snippet_format() {
 
 > Electron 主进程，负责窗口管理、系统托盘、进程间通信。
 
-在 [[架构设计]] 中，主进程位于应用底层，为 Vue 渲染进程提供原生能力。
+在 [[20-架构设计]] 中，主进程位于应用底层，为 Vue 渲染进程提供原生能力。
 
 ## 核心实现
 
@@ -265,16 +265,16 @@ function createWindow() {
 ## 依赖关系
 
 - 上游：被应用启动流程调用
-- 下游：依赖 [[模块/Preload桥接层]]
+- 下游：依赖 [[30-模块/20-Preload桥接层]]
 
 ## 相关笔记
 
-- [[项目概览]]：项目整体上下文
-- [[模块/Preload桥接层]]：preload 脚本
+- [[10-项目概览]]：项目整体上下文
+- [[30-模块/20-Preload桥接层]]：preload 脚本
 ENDNOTE
 
   local content
-  content=$(cat "$REPO_DIR/模块/Electron主进程.md")
+  content=$(cat "$REPO_DIR/30-模块/10-Electron主进程.md")
 
   # 代码片段格式检查
   assert_contains "代码块包含语言标记" "$content" '```typescript'
@@ -283,7 +283,7 @@ ENDNOTE
 
   # 代码片段长度（不超过 30 行）
   local snippet_lines
-  snippet_lines=$(sed -n '/```typescript/,/```/p' "$REPO_DIR/模块/Electron主进程.md" | wc -l | tr -d ' ')
+  snippet_lines=$(sed -n '/```typescript/,/```/p' "$REPO_DIR/30-模块/10-Electron主进程.md" | wc -l | tr -d ' ')
   TOTAL=$((TOTAL + 1))
   if [[ "$snippet_lines" -le 32 ]]; then  # 30行内容 + 2行标记
     echo "  ✅ 代码片段长度合规 ($snippet_lines 行含标记)"
@@ -298,7 +298,7 @@ test_5_index_generation() {
   echo "测试 5: 索引文件生成与层级结构"
 
   # 生成模块目录索引
-  cat > "$REPO_DIR/模块/_index.md" << 'ENDINDEX'
+  cat > "$REPO_DIR/30-模块/_index.md" << 'ENDINDEX'
 ---
 更新时间: 2026-04-13 15:30
 笔记总数: 1
@@ -312,7 +312,7 @@ test_5_index_generation() {
 
 | 笔记 | 一句话摘要 | 标签 | 创建时间 |
 |------|-----------|------|---------|
-| Electron主进程 | Electron 主进程，窗口管理与进程间通信 | Electron, 主进程 | 2026-04-13 |
+| 10-Electron主进程 | Electron 主进程，窗口管理与进程间通信 | Electron, 主进程 | 2026-04-13 |
 ENDINDEX
 
   # 生成仓库根索引
@@ -330,26 +330,26 @@ ENDINDEX
 
 | 子目录 | 笔记数 | 关键主题 |
 |--------|--------|---------|
-| 模块/ | 1 | Electron, 主进程 |
+| 30-模块/ | 1 | Electron, 主进程 |
 
 ## 本目录笔记
 
 | 笔记 | 一句话摘要 | 标签 | 创建时间 |
 |------|-----------|------|---------|
-| 项目概览 | AIoT 客服桌面应用，Vue3 + Electron | TypeScript, Vue3 | 2026-04-13 |
+| 10-项目概览 | AIoT 客服桌面应用，Vue3 + Electron | TypeScript, Vue3 | 2026-04-13 |
 ENDINDEX
 
   # 验证仓库索引
   local repo_index
   repo_index=$(cat "$REPO_DIR/_index.md")
-  assert_contains "索引包含子目录表" "$repo_index" "模块/"
-  assert_contains "索引包含笔记表" "$repo_index" "项目概览"
+  assert_contains "索引包含子目录表" "$repo_index" "30-模块/"
+  assert_contains "索引包含笔记表" "$repo_index" "10-项目概览"
   assert_contains "笔记总数正确" "$repo_index" "笔记总数: 2"
 
   # 验证模块索引
   local mod_index
-  mod_index=$(cat "$REPO_DIR/模块/_index.md")
-  assert_contains "模块索引包含笔记" "$mod_index" "Electron主进程"
+  mod_index=$(cat "$REPO_DIR/30-模块/_index.md")
+  assert_contains "模块索引包含笔记" "$mod_index" "10-Electron主进程"
   assert_contains "模块笔记总数" "$mod_index" "笔记总数: 1"
 
   # 生成代码解读总索引
@@ -386,17 +386,17 @@ test_6_search_navigation() {
   # 步骤 2: 进入仓库索引
   local repo_index
   repo_index=$(cat "$REPO_DIR/_index.md")
-  assert_contains "仓库索引列出模块目录" "$repo_index" "模块/"
+  assert_contains "仓库索引列出模块目录" "$repo_index" "30-模块/"
 
   # 步骤 3: 进入模块索引
   local mod_index
-  mod_index=$(cat "$REPO_DIR/模块/_index.md")
-  assert_contains "模块索引包含 Electron" "$mod_index" "Electron主进程"
+  mod_index=$(cat "$REPO_DIR/30-模块/_index.md")
+  assert_contains "模块索引包含 Electron" "$mod_index" "10-Electron主进程"
 
   # 步骤 4: 读取目标笔记
-  assert_file_exists "目标笔记存在" "$REPO_DIR/模块/Electron主进程.md"
+  assert_file_exists "目标笔记存在" "$REPO_DIR/30-模块/10-Electron主进程.md"
   local note_content
-  note_content=$(cat "$REPO_DIR/模块/Electron主进程.md")
+  note_content=$(cat "$REPO_DIR/30-模块/10-Electron主进程.md")
   assert_contains "笔记包含代码实现" "$note_content" "createWindow"
 }
 

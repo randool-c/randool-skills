@@ -257,17 +257,17 @@ test_5_mapping_crud() {
   fi
 
   # 追加映射
-  append_mapping "$meta_file" "src/main.ts" "模块/应用入口" "文件级"
-  append_mapping "$meta_file" "electron/main/" "模块/Electron主进程" "整个目录"
-  append_mapping "$meta_file" "src/store/" "模块/状态管理-Pinia" "整个目录"
+  append_mapping "$meta_file" "src/main.ts" "30-模块/10-应用入口" "文件级"
+  append_mapping "$meta_file" "electron/main/" "30-模块/20-Electron主进程" "整个目录"
+  append_mapping "$meta_file" "src/store/" "30-模块/30-状态管理-Pinia" "整个目录"
 
   # 查询映射
   local note
   note=$(lookup_mapping "$meta_file" "src/main.ts")
-  assert_eq "查询 src/main.ts → 应用入口" "模块/应用入口" "$note"
+  assert_eq "查询 src/main.ts → 应用入口" "30-模块/10-应用入口" "$note"
 
   note=$(lookup_mapping "$meta_file" "electron/main/")
-  assert_eq "查询 electron/main/ → Electron主进程" "模块/Electron主进程" "$note"
+  assert_eq "查询 electron/main/ → Electron主进程" "30-模块/20-Electron主进程" "$note"
 
   # 统计映射数
   local count

@@ -66,6 +66,6 @@ bash obsidian-code-reader/tests/test_deep_analysis.sh
 
 ## 关键约定
 
-- 笔记文件名：2-4个关键词用 `-` 连接，禁用 `.`（如 `React-useEffect-依赖陷阱`）
+- 笔记文件名：`NN-` 序号前缀 + 2-4个关键词用 `-` 连接，禁用 `.`（如 `10-项目概览`、`30-模块/10-认证模块-JWT鉴权`）。`_index.md` 和 `_repo_meta.md` 不加前缀
 - 索引文件固定命名 `_index.md`，含 frontmatter 元数据 + 子目录表 + 笔记表
 - `_repo_meta.md`（仅 code-reader）：记录上次分析的 commit、文件-笔记映射，用于增量同步
