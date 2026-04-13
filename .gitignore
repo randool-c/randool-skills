@@ -1,13 +1,13 @@
 # macOS
 .DS_Store
 
-# Vault 配置（用户本地路径，不应提交）
-vault_path.txt
-
 # Skill 运行时产物
 *.workspace/
 evals/
 iteration-*/
+
+# Claude Code 本地配置
+.claude/settings.local.json
 
 # Editor
 *.swp

@@ -120,13 +120,12 @@ compatibility:
 
 ### 步骤 1: 检查 Vault 配置
 
-Vault 配置保存在 agent 无关的用户级公共路径 `~/.agents/config/obsidian_vault.txt`，任何 AI agent 的 Obsidian 相关 skill 均可共享此配置。
+Vault 配置保存在用户级公共路径 `~/.agents/config/obsidian_vault.txt`，所有 Obsidian 相关 skill 共享此配置。
 
-**配置查找优先级（兼容旧版）**：
-1. `~/.agents/config/obsidian_vault.txt` ← 公共配置（推荐）
-2. 本 skill 目录下的 `vault_path.txt` ← 旧版位置，找到后自动迁移到公共路径
+**配置已存在**：
+直接读取获取 vault 名称和绝对路径，继续步骤 2。
 
-**首次使用（所有位置都不存在）**：
+**配置不存在（首次使用）**：
 1. 提醒用户：**建议使用一个专门的新 vault 来存放笔记**。本 skill 会在 vault 中创建 `_index.md` 索引文件、管理 `.gitignore`、执行 git 操作等，如果使用已有的个人 vault，可能与现有内容冲突或产生意外覆盖。
 2. 询问用户：你的 Obsidian vault 名称是什么？
 3. 用 `find ~ -maxdepth 3 -name "<vault名称>" -type d` 定位 vault 的绝对路径
@@ -136,13 +135,6 @@ Vault 配置保存在 agent 无关的用户级公共路径 `~/.agents/config/obs
    <vault绝对路径>
    ```
 5. 继续步骤 2
-
-**后续使用（配置文件已存在）**：
-直接读取 `~/.agents/config/obsidian_vault.txt` 获取 vault 名称和绝对路径，继续步骤 2。
-
-**旧版迁移**：如果公共路径不存在但 skill 目录下的 `vault_path.txt` 存在，读取后写入公共路径，完成迁移。
-
-**旧格式兼容**：如果配置文件有 3 行（旧格式含顶级目录），忽略第 2 行（旧的顶级目录），将第 1 行作为 vault 名称、第 3 行作为绝对路径。如果只有 2 行且第 2 行不是绝对路径（不以 `/` 开头），说明是更早的旧格式，用 `find` 定位后重写为新格式。迁移时一并修正格式。
 
 ### 步骤 2: 分析内容
 
@@ -476,4 +468,4 @@ MyVault
 /Users/someone/Documents/MyVault
 ```
 
-首次使用时自动创建 `~/.agents/config/` 目录和配置文件。旧版 skill 目录下的 `vault_path.txt` 会被自动迁移到公共路径。
+首次使用时自动创建 `~/.agents/config/` 目录和配置文件。
