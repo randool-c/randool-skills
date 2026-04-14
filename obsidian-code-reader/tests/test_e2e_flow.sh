@@ -312,7 +312,7 @@ test_5_index_generation() {
 
 | 笔记 | 一句话摘要 | 标签 | 创建时间 |
 |------|-----------|------|---------|
-| 10-Electron主进程 | Electron 主进程，窗口管理与进程间通信 | Electron, 主进程 | 2026-04-13 |
+| [[10-Electron主进程]] | Electron 主进程，窗口管理与进程间通信 | Electron, 主进程 | 2026-04-13 |
 ENDINDEX
 
   # 生成仓库根索引
@@ -330,26 +330,26 @@ ENDINDEX
 
 | 子目录 | 笔记数 | 关键主题 |
 |--------|--------|---------|
-| 30-模块/ | 1 | Electron, 主进程 |
+| [[30-模块/_index|30-模块]] | 1 | Electron, 主进程 |
 
 ## 本目录笔记
 
 | 笔记 | 一句话摘要 | 标签 | 创建时间 |
 |------|-----------|------|---------|
-| 10-项目概览 | AIoT 客服桌面应用，Vue3 + Electron | TypeScript, Vue3 | 2026-04-13 |
+| [[10-项目概览]] | AIoT 客服桌面应用，Vue3 + Electron | TypeScript, Vue3 | 2026-04-13 |
 ENDINDEX
 
   # 验证仓库索引
   local repo_index
   repo_index=$(cat "$REPO_DIR/_index.md")
-  assert_contains "索引包含子目录表" "$repo_index" "30-模块/"
-  assert_contains "索引包含笔记表" "$repo_index" "10-项目概览"
+  assert_contains "索引包含子目录表" "$repo_index" "[[30-模块/_index|30-模块]]"
+  assert_contains "索引包含笔记表" "$repo_index" "[[10-项目概览]]"
   assert_contains "笔记总数正确" "$repo_index" "笔记总数: 2"
 
   # 验证模块索引
   local mod_index
   mod_index=$(cat "$REPO_DIR/30-模块/_index.md")
-  assert_contains "模块索引包含笔记" "$mod_index" "10-Electron主进程"
+  assert_contains "模块索引包含笔记" "$mod_index" "[[10-Electron主进程]]"
   assert_contains "模块笔记总数" "$mod_index" "笔记总数: 1"
 
   # 生成代码解读总索引
@@ -367,7 +367,7 @@ ENDINDEX
 
 | 子目录 | 笔记数 | 关键主题 |
 |--------|--------|---------|
-| aiot-customer-service-app/ | 2 | Vue3, Electron, TypeScript |
+| [[aiot-customer-service-app/_index|aiot-customer-service-app]] | 2 | Vue3, Electron, TypeScript |
 ENDINDEX
 
   assert_file_exists "代码解读总索引已生成" "$VAULT_ROOT/代码解读/_index.md"
@@ -381,17 +381,17 @@ test_6_search_navigation() {
   # 步骤 1: 读取代码解读总索引
   local top_index
   top_index=$(cat "$VAULT_ROOT/代码解读/_index.md")
-  assert_contains "总索引列出仓库" "$top_index" "aiot-customer-service-app/"
+  assert_contains "总索引列出仓库" "$top_index" "[[aiot-customer-service-app/_index|aiot-customer-service-app]]"
 
   # 步骤 2: 进入仓库索引
   local repo_index
   repo_index=$(cat "$REPO_DIR/_index.md")
-  assert_contains "仓库索引列出模块目录" "$repo_index" "30-模块/"
+  assert_contains "仓库索引列出模块目录" "$repo_index" "[[30-模块/_index|30-模块]]"
 
   # 步骤 3: 进入模块索引
   local mod_index
   mod_index=$(cat "$REPO_DIR/30-模块/_index.md")
-  assert_contains "模块索引包含 Electron" "$mod_index" "10-Electron主进程"
+  assert_contains "模块索引包含 Electron" "$mod_index" "[[10-Electron主进程]]"
 
   # 步骤 4: 读取目标笔记
   assert_file_exists "目标笔记存在" "$REPO_DIR/30-模块/10-Electron主进程.md"

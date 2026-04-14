@@ -263,7 +263,7 @@ transform_index_entry() {
   fi
 
   # 在子目录表表头分隔线后插入新行
-  local subdir_row="| ${subdir_name}/ | ${note_count} | ${topics} |"
+  local subdir_row="| [[${subdir_name}/_index|${subdir_name}]] | ${note_count} | ${topics} |"
   sed -i '' "/^|--------|--------|---------|$/a\\
 ${subdir_row}
 " "$index_file"
@@ -639,9 +639,9 @@ test_9_index_transform() {
 
 | 笔记 | 一句话摘要 | 标签 | 创建时间 |
 |------|-----------|------|---------|
-| 10-认证模块-权限校验 | JWT 认证与 RBAC 权限 | 认证, JWT | 2026-04-13 |
-| 20-用户管理-CRUD | 用户增删改查 | 用户, CRUD | 2026-04-13 |
-| 30-数据处理-ETL | ETL 数据管道 | ETL, 数据 | 2026-04-13 |
+| [[10-认证模块-权限校验]] | JWT 认证与 RBAC 权限 | 认证, JWT | 2026-04-13 |
+| [[20-用户管理-CRUD]] | 用户增删改查 | 用户, CRUD | 2026-04-13 |
+| [[30-数据处理-ETL]] | ETL 数据管道 | ETL, 数据 | 2026-04-13 |
 EOF
 
   # 执行转换：认证模块从笔记表移至子目录表
@@ -652,16 +652,16 @@ EOF
 
   # 验证子目录表已创建并包含新条目
   assert_contains "子目录表存在" "$content" "## 子目录"
-  assert_contains "子目录条目" "$content" "10-认证模块/"
+  assert_contains "子目录条目" "$content" "[[10-认证模块/_index|10-认证模块]]"
   assert_contains "子目录笔记数" "$content" "| 3 |"
   assert_contains "子目录主题" "$content" "JWT, 密码, 权限"
 
   # 验证原笔记条目已从笔记表删除
-  assert_not_contains "原笔记条目已删除" "$content" "10-认证模块-权限校验"
+  assert_not_contains "原笔记条目已删除" "$content" "[[10-认证模块-权限校验]]"
 
   # 验证不影响其他笔记
-  assert_contains "用户管理不变" "$content" "20-用户管理-CRUD"
-  assert_contains "数据处理不变" "$content" "30-数据处理-ETL"
+  assert_contains "用户管理不变" "$content" "[[20-用户管理-CRUD]]"
+  assert_contains "数据处理不变" "$content" "[[30-数据处理-ETL]]"
 }
 
 test_10_independent_run() {

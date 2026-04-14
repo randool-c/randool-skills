@@ -391,7 +391,7 @@ EOF
 
 | 笔记 | 一句话摘要 | 标签 | 创建时间 |
 |------|-----------|------|---------|
-| Java-Spring-DI | Spring IoC 通过构造器/Setter 注入管理依赖 | Java, Spring | 2026-04-13 |
+| [[Java-Spring-DI]] | Spring IoC 通过构造器/Setter 注入管理依赖 | Java, Spring | 2026-04-13 |
 EOF
 
   # 检测

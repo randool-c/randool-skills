@@ -178,16 +178,16 @@ test_a5_vault_root_index() {
 
 | 子目录 | 笔记数 | 关键主题 |
 |--------|--------|---------|
-| 学习/ | 2 | Spring, React, Hooks |
-| 生活/ | 1 | 读书, 生活 |
-| 工作/ | 1 | 复盘, 支付, 微服务 |
+| [[学习/_index|学习]] | 2 | Spring, React, Hooks |
+| [[生活/_index|生活]] | 1 | 读书, 生活 |
+| [[工作/_index|工作]] | 1 | 复盘, 支付, 微服务 |
 EOF
 
   local content
   content=$(cat "$root_index")
-  assert_contains "根索引包含学习" "$content" "学习/"
-  assert_contains "根索引包含生活" "$content" "生活/"
-  assert_contains "根索引包含工作" "$content" "工作/"
+  assert_contains "根索引包含学习" "$content" "[[学习/_index|学习]]"
+  assert_contains "根索引包含生活" "$content" "[[生活/_index|生活]]"
+  assert_contains "根索引包含工作" "$content" "[[工作/_index|工作]]"
   assert_eq "笔记总数为 4" "4" "$(grep '笔记总数:' "$root_index" | awk '{print $2}')"
 }
 
@@ -207,7 +207,7 @@ test_a6_index_chain_to_root() {
 
 | 笔记 | 一句话摘要 | 标签 | 创建时间 |
 |------|-----------|------|---------|
-| Spring-DI-核心概念 | Spring IoC 构造器/Setter 注入管理依赖 | Java, Spring | 2026-04-13 |
+| [[Spring-DI-核心概念]] | Spring IoC 构造器/Setter 注入管理依赖 | Java, Spring | 2026-04-13 |
 EOF
 
   # 验证从叶子到根的索引链
@@ -262,7 +262,7 @@ test_b3_leaf_to_note() {
   local content
   content=$(cat "$leaf_index")
 
-  assert_contains "索引包含笔记名" "$content" "Spring-DI-核心概念"
+  assert_contains "索引包含笔记名" "$content" "[[Spring-DI-核心概念]]"
 
   # 从索引中的笔记名构造路径，验证文件存在
   local note_dir

@@ -50,14 +50,14 @@ compatibility:
 
 | 子目录 | 笔记数 | 关键主题 |
 |--------|--------|---------|
-| <子目录A>/ | 5 | 主题1, 主题2 |
-| <子目录B>/ | 3 | 主题3, 主题4 |
+| [[<子目录A>/_index\|<子目录A>]] | 5 | 主题1, 主题2 |
+| [[<子目录B>/_index\|<子目录B>]] | 3 | 主题3, 主题4 |
 
 ## 本目录笔记
 
 | 笔记 | 一句话摘要 | 标签 | 创建时间 |
 |------|-----------|------|---------|
-| 笔记文件名(不含.md) | 30字以内的核心内容摘要 | 标签1, 标签2 | YYYY-MM-DD |
+| [[笔记文件名]] | 30字以内的核心内容摘要 | 标签1, 标签2 | YYYY-MM-DD |
 ```
 
 **关键规则：**
@@ -66,6 +66,7 @@ compatibility:
 2. **一句话摘要**从笔记的「核心要点」首段提炼，控制在 30 字以内
 3. **笔记总数**包含所有子目录中的笔记（递归累计）
 4. `_index.md` 本身不计入笔记总数
+5. 索引表中笔记名使用 `[[笔记名]]` Wikilink，子目录使用 `[[子目录/_index|子目录]]` Wikilink，使 Obsidian 可直接点击导航并自动生成反向链接
 5. 索引文件名固定为 `_index.md`，Obsidian 中可通过设置排除在图谱外
 
 ### 索引层级示例
@@ -109,7 +110,7 @@ compatibility:
 
 | 笔记 | 实际路径 | 一句话摘要 |
 |------|---------|-----------|
-| Docker-部署-PostgreSQL | ../DevOps/Docker/Docker-部署-PostgreSQL | 用 Docker Compose 部署 PostgreSQL 并配置持久化 |
+| [[../DevOps/Docker/Docker-部署-PostgreSQL\|Docker-部署-PostgreSQL]] | ../DevOps/Docker/Docker-部署-PostgreSQL | 用 Docker Compose 部署 PostgreSQL 并配置持久化 |
 ```
 
 跨领域引用是可选的，仅在笔记明确涉及当前目录领域时才添加。
