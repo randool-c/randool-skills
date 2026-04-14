@@ -362,9 +362,15 @@ def verify_token(token: str) -> dict:
 
 增量更新，不全量重建。
 
-### 步骤 10: Git 自动同步
+### 步骤 10: ⚠️ Git 自动同步（必须执行，不可跳过）
 
-读取 `references/git-sync.md` 执行 vault 的 Git 同步流程。
+> **STOP** — 这是「仓库解读」流程的最后一步，必须执行。
+
+执行检查清单：
+- [ ] 读取 `references/git-sync.md` 获取完整流程
+- [ ] 检测 vault 是否满足同步条件（3 条：是 git 仓库 + 有 remote + 有上游跟踪分支）
+- [ ] 满足 → 执行 add / commit / push
+- [ ] 不满足 → 静默跳过，继续告知用户解读完成
 
 ---
 
@@ -570,9 +576,15 @@ Grep pattern="<关键词>" path="<vault>/代码解读/"
 4. 新子模块笔记之间建立 Wikilink（同级引用、上下级引用）
 5. 验证：确认不再有指向原路径的断链
 
-### 步骤 11: Git 自动同步
+### 步骤 11: ⚠️ Git 自动同步（必须执行，不可跳过）
 
-读取 `references/git-sync.md` 执行 vault 的 Git 同步流程。
+> **STOP** — 这是「模块深剖」流程的最后一步，必须执行。
+
+执行检查清单：
+- [ ] 读取 `references/git-sync.md` 获取完整流程
+- [ ] 检测 vault 是否满足同步条件（3 条：是 git 仓库 + 有 remote + 有上游跟踪分支）
+- [ ] 满足 → 执行 add / commit / push
+- [ ] 不满足 → 静默跳过，继续告知用户深剖完成
 
 ---
 
@@ -655,7 +667,9 @@ def verify_token(token: str) -> dict:
 
 ---
 
-## Git 自动同步
+## ⚠️ Git 自动同步（每个写操作的 command 完成后必须执行）
+
+**此步骤不可跳过。** 每个 command（仓库解读、仓库同步、模块深剖）的最后一步都是 Git 自动同步。如果 agent 跳过此步骤，用户的笔记将只保存在本地，不会同步到远程仓库。
 
 读取 `references/git-sync.md` 获取完整的检测条件、执行流程和失败恢复逻辑。
 

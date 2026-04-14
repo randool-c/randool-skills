@@ -99,6 +99,12 @@ R   src/utils.py → src/helpers.py  ← 重命名
 
 更新受影响笔记所在目录的 `_index.md`（笔记摘要可能变更），以及上级目录的笔记数。
 
-## 步骤 8: Git 自动同步
+## 步骤 8: ⚠️ Git 自动同步（必须执行，不可跳过）
 
-读取 `references/git-sync.md` 执行 vault 的 Git 同步。
+> **STOP** — 这是「仓库同步」流程的最后一步，必须执行。
+
+执行检查清单：
+- [ ] 读取 `references/git-sync.md` 获取完整流程
+- [ ] 检测 vault 是否满足同步条件（3 条：是 git 仓库 + 有 remote + 有上游跟踪分支）
+- [ ] 满足 → 执行 add / commit / push
+- [ ] 不满足 → 静默跳过，继续告知用户同步完成
