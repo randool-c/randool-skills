@@ -192,7 +192,7 @@ Vault 配置保存在用户级公共路径 `~/.agents/config/obsidian_vault.txt`
 
 字段说明：
 - `timestamp`: `YYYY-MM-DD HH:mm`
-- `tags`: `#Java #Spring #依赖注入` 格式
+- `tags`: `[Java, Spring, 依赖注入]` 格式，直接写标签名，不加 `#` 前缀
 - `source`: `与 Claude 的对话 - YYYY-MM-DD`
 - `title`: 反映内容要点的标题（不同于文件名）
 - `key_points`: 提炼的核心知识点
